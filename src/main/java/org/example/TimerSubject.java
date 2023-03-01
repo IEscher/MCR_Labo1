@@ -1,8 +1,26 @@
 package org.example;
 
-public class TimerSubject extends Subject {
+import java.util.Timer;
+import java.util.TimerTask;
 
+public class TimerSubject extends Subject {
+    private static int timerNumber = 0;
     private int time;
+    private String name;
+    private Timer timer;
+
+    public TimerSubject() {
+        name = "Chrono#" + ++timerNumber;
+        time = 0;
+        timer = new Timer();
+    }
+
+    class TimerUpdater extends TimerTask {
+        @Override
+        public void run() {
+            setTime(time + 1);
+        }
+    }
 
     public void notifyObservers() {
         for (Observer observer : observerList) {
@@ -20,14 +38,16 @@ public class TimerSubject extends Subject {
     }
 
     public void start() {
-
+        timer.schedule(new TimerUpdater(), 0, 1000);
     }
 
     public void stop() {
-
+        timer.cancel();
     }
 
     public void reset() {
-
+        timer.cancel();
+        time = 0;
+        timer.schedule(new TimerUpdater(), 0, 1000);
     }
 }

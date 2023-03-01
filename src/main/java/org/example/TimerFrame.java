@@ -8,7 +8,6 @@ import java.util.List;
 public class TimerFrame extends JFrame {
     private List<TimerSubject> timerList;
 
-
     public TimerFrame(String title, int timerAmount) throws HeadlessException {
         super(title);
         this.timerList = new LinkedList<>();
