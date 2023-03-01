@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Subject {
-    protected List<Observer> observerList;
+    protected List<IObserver> observerList;
 
     Subject() {
         observerList = new LinkedList<>();
@@ -12,11 +12,11 @@ public abstract class Subject {
 
     public abstract void notifyObservers();
 
-    public void attach(Observer observer) {
+    public void attach(IObserver observer) {
         observerList.add(observer);
     }
 
-    public void detach(Observer observer) {
+    public void detach(IObserver observer) {
         observerList.remove(observer);
     }
 }
