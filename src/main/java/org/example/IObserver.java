@@ -1,5 +1,5 @@
 package org.example;
 
-public abstract class Observer {
+public interface IObserver {
     public abstract void update(int time);
 }

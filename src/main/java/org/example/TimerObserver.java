@@ -1,6 +1,6 @@
 package org.example;
 
-public class TimerObserver extends Observer{
+public class TimerObserver implements IObserver {
     private int time;
     private Subject associatedSubject;
 

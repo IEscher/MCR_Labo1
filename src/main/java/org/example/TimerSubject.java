@@ -23,7 +23,7 @@ public class TimerSubject extends Subject {
     }
 
     public void notifyObservers() {
-        for (Observer observer : observerList) {
+        for (IObserver observer : observerList) {
             observer.update(time);
         }
     }
