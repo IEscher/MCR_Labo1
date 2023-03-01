@@ -19,18 +19,18 @@ public class ControlFrame {
             "Numérique"
     ));
 
-    private List<TimerSubject> timerList;
-    private List<JPanel> panels;
+    //private List<TimerSubject> timerList;
     private JFrame frame;
 
     public ControlFrame(String title, int timerAmount) throws HeadlessException {
         frame = new JFrame(title);
-        this.timerList = new LinkedList<>();
+        //this.timerList = new LinkedList<>();
         for (int i = 0; i < timerAmount; i++) {
             TimerSubject timer = new TimerSubject();
-            timerList.add(timer);
-            frame.add(createLinePanel(timerList.get(i)));
+            //timerList.add(timer);
+            frame.add(createLinePanel(timer));
         }
+        frame.setLayout(new FlowLayout(FlowLayout.RIGHT));
     }
 
     public void show() {
@@ -43,7 +43,7 @@ public class ControlFrame {
     private JPanel createLinePanel(TimerSubject ts) {
         JPanel p = new JPanel();
 
-        p.add(new JTextArea(ts.getName()));
+        p.add(new JLabel(ts.getName()));
 
         ActionListener al = new ActionListener() {
             @Override
