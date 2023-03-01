@@ -4,10 +4,21 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ControlFrame {
+    private final ArrayList<String> captions = new ArrayList<>(Arrays.asList(
+            "Démarrer",
+            "Arrêter",
+            "Réinitialiser",
+            "Cadran romain",
+            "Cadran arabe",
+            "Numérique"
+    ));
+
     private List<TimerSubject> timerList;
     private List<JPanel> panels;
     private JFrame frame;
@@ -34,28 +45,38 @@ public class ControlFrame {
 
         p.add(new JTextArea(ts.getName()));
 
-        JButton b0 = new JButton("Démarrer");
-        JButton b1 = new JButton("Arrêter");
-        JButton b2 = new JButton("Réinitialiser");
-        JButton b3 = new JButton("Cadran romain");
-        JButton b4 = new JButton("Cadran arabe");
-        JButton b5 = new JButton("Numérique");
-
-        p.add(b0);
-        p.add(b1);
-        p.add(b2);
-        p.add(b3);
-        p.add(b4);
-        p.add(b5);
-
-        p.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        b3.addActionListener(new ActionListener() {
+        ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                TimerFrame tf = new TimerFrame(ts);
-                tf.show();
+                switch(captions.indexOf(ae.getActionCommand())) {
+                    case 0:
+                        ts.start();
+                        break;
+                    case 1:
+                        ts.stop();
+                        break;
+                    case 2:
+                        ts.reset();
+                    case 3:
+                        TimerFrame roman = new TimerFrame(ts);
+                        break;
+                    case 4:
+                        TimerFrame arabe = new TimerFrame(ts);
+                        break;
+                    case 5:
+                        TimerFrame numerique = new TimerFrame(ts);
+                        break;
+                }
             }
-        });
+        };
+
+        for (String s : captions) {
+            JButton b = new JButton(s);
+            p.add(b);
+            b.addActionListener(al);
+        }
+
+        p.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         return p;
     }

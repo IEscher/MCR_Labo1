@@ -4,12 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TimerFrame extends TimerObserver {
-
     private JFrame frame;
 
     TimerFrame(Subject subject) {
         super(subject);
         frame = new JFrame();
+        this.show();
     }
 
     public void show() {
