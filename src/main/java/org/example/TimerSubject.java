@@ -22,6 +22,10 @@ public class TimerSubject extends Subject {
         }
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void notifyObservers() {
         for (IObserver observer : observerList) {
             observer.update(time);
