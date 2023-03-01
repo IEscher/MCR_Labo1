@@ -58,13 +58,15 @@ public class ControlFrame {
                     case 2:
                         ts.reset();
                     case 3:
-                        TimerFrame roman = new TimerFrame(ts);
+                        new TimerFrame(ts,
+                                "cadran_chiffres_arabes.jpg",
+                                Color.BLACK, Color.GRAY, Color.YELLOW);
                         break;
                     case 4:
-                        TimerFrame arabe = new TimerFrame(ts);
+                        new TimerFrame(ts);
                         break;
                     case 5:
-                        TimerFrame numerique = new TimerFrame(ts);
+                        new TimerFrame(ts);
                         break;
                 }
             }

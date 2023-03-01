@@ -2,9 +2,9 @@ package org.example;
 
 public class TimerObserver implements IObserver {
     private int time;
-    private Subject associatedSubject;
+    protected TimerSubject associatedSubject;
 
-    TimerObserver(Subject subject) {
+    TimerObserver(TimerSubject subject) {
         subject.attach(this);
         associatedSubject = subject;
     }
