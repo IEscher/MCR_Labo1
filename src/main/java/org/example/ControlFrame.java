@@ -34,9 +34,9 @@ public class ControlFrame {
     }
 
     public void show() {
+        frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(400, 200));
-        frame.pack();
         frame.setVisible(true);
     }
 
@@ -57,13 +57,16 @@ public class ControlFrame {
                         break;
                     case 2:
                         ts.reset();
+                        break;
                     case 3:
                         new TimerFrame(ts,
-                                "cadran_chiffres_arabes.jpg",
+                                "cadran_chiffres_romains.jpg",
                                 Color.BLACK, Color.GRAY, Color.YELLOW);
                         break;
                     case 4:
-                        new TimerFrame(ts);
+                        new TimerFrame(ts,
+                                "cadran_chiffres_arabes.jpg",
+                                Color.BLACK, Color.BLUE, Color.RED);
                         break;
                     case 5:
                         new TimerFrame(ts);

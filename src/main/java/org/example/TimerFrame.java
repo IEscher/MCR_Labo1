@@ -11,12 +11,12 @@ public class TimerFrame extends TimerObserver {
     TimerFrame(TimerSubject subject, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         super(subject);
         frame = new JFrame();
-        Image image = Toolkit.getDefaultToolkit().getImage(fileName);
+        Image image = Toolkit.getDefaultToolkit().getImage(fileName)
+                .getScaledInstance(SIZE, SIZE, Image.SCALE_SMOOTH);
 
         class DisplayGraphics extends JPanel{
             @Override
             protected void paintComponent(Graphics g) {
-                image.getScaledInstance(SIZE, SIZE, Image.SCALE_SMOOTH);
                 g.drawImage(image, 0, 0, null);
                 g.drawString(associatedSubject.getName(), SIZE / 2 - 35, SIZE / 2);
             }
@@ -38,9 +38,9 @@ public class TimerFrame extends TimerObserver {
     }
 
     public void show() {
+        frame.pack();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setPreferredSize(new Dimension(SIZE, SIZE));
-        frame.pack();
         frame.setVisible(true);
     }
 }
