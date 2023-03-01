@@ -48,6 +48,5 @@ public class TimerSubject extends Subject {
     public void reset() {
         timer.cancel();
         time = 0;
-        timer.schedule(new TimerUpdater(), 0, 1000);
     }
 }
