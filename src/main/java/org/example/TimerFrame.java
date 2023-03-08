@@ -17,7 +17,7 @@ public class TimerFrame extends TimerObserver {
         class DisplayGraphics extends JPanel{
             @Override
             protected void paintComponent(Graphics g) {
-                g.drawImage(image, 0, 0, null);
+                g.drawImage(image, 0, 0, this);
                 g.drawString(associatedSubject.getName(), SIZE / 2 - 35, SIZE / 2);
             }
 
