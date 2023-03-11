@@ -48,29 +48,17 @@ public class ControlFrame {
         ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                switch(captions.indexOf(ae.getActionCommand())) {
-                    case 0:
-                        ts.start();
-                        break;
-                    case 1:
-                        ts.stop();
-                        break;
-                    case 2:
-                        ts.reset();
-                        break;
-                    case 3:
-                        new TimerFrame(ts,
-                                "cadran_chiffres_romains.jpg",
-                                Color.BLACK, Color.GRAY, Color.YELLOW);
-                        break;
-                    case 4:
-                        new TimerFrame(ts,
-                                "cadran_chiffres_arabes.jpg",
-                                Color.BLACK, Color.BLUE, Color.RED);
-                        break;
-                    case 5:
-                        new TimerFrame(ts);
-                        break;
+                switch (captions.indexOf(ae.getActionCommand())) {
+                    case 0 -> ts.start();
+                    case 1 -> ts.stop();
+                    case 2 -> ts.reset();
+                    case 3 -> new TimerFrame(ts,
+                            "cadran_chiffres_romains.jpg",
+                            Color.BLACK, Color.GRAY, Color.YELLOW);
+                    case 4 -> new TimerFrame(ts,
+                            "cadran_chiffres_arabes.jpg",
+                            Color.BLACK, Color.BLUE, Color.RED);
+                    case 5 -> new TimerFrame(ts);
                 }
             }
         };

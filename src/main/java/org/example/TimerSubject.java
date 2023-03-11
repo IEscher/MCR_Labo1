@@ -12,7 +12,6 @@ public class TimerSubject extends Subject {
     public TimerSubject() {
         name = "Chrono#" + ++timerNumber;
         time = 0;
-        timer = new Timer();
     }
 
     class TimerUpdater extends TimerTask {
@@ -42,6 +41,7 @@ public class TimerSubject extends Subject {
     }
 
     public void start() {
+        timer = new Timer();
         timer.schedule(new TimerUpdater(), 0, 1000);
     }
 
@@ -51,6 +51,7 @@ public class TimerSubject extends Subject {
 
     public void reset() {
         timer.cancel();
+        timer.purge();
         time = 0;
     }
 }
