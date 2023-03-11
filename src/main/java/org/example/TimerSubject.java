@@ -6,7 +6,7 @@ import java.util.TimerTask;
 public class TimerSubject extends Subject {
     private static int timerNumber = 0;
     private int time;
-    private String name;
+    private final String name;
     private Timer timer;
 
     public TimerSubject() {

@@ -19,24 +19,48 @@ public class ControlFrame {
             "Numérique"
     ));
 
-    //private List<TimerSubject> timerList;
+    private List<TimerSubject> timerList;
     private JFrame frame;
 
     public ControlFrame(String title, int timerAmount) throws HeadlessException {
         frame = new JFrame(title);
-        //this.timerList = new LinkedList<>();
+        this.timerList = new LinkedList<>();
         for (int i = 0; i < timerAmount; i++) {
             TimerSubject timer = new TimerSubject();
-            //timerList.add(timer);
+            timerList.add(timer);
             frame.add(createLinePanel(timer));
         }
-        frame.setLayout(new FlowLayout(FlowLayout.RIGHT));
+
+        // Buttons for all timers
+        JPanel p = new JPanel();
+        p.add(new JLabel("Tous les chronos"));
+        for (int i = 3 ; i < 6 ; ++i) {
+            JButton b = new JButton(captions.get(i));
+            ActionListener al = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    switch (captions.indexOf(ae.getActionCommand())) {
+                        case 3 -> new TimerFrame(timerList,
+                                "cadran_chiffres_romains.jpg",
+                                Color.BLACK, Color.GRAY, Color.YELLOW);
+                        case 4 -> new TimerFrame(timerList,
+                                "cadran_chiffres_arabes.jpg",
+                                Color.BLACK, Color.BLUE, Color.RED);
+                        case 5 -> new TimerFrame(timerList);
+                    }
+                }
+            };
+            b.addActionListener(al);
+            p.add(b);
+        }
+
+        frame.add(p);
+        frame.setLayout(new GridLayout(timerAmount+1, 0));
     }
 
     public void show() {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(400, 200));
         frame.setVisible(true);
     }
 
