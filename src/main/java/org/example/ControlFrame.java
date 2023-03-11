@@ -19,8 +19,8 @@ public class ControlFrame {
             "Numérique"
     ));
 
-    private List<TimerSubject> timerList;
-    private JFrame frame;
+    private final List<TimerSubject> timerList;
+    private final JFrame frame;
 
     public ControlFrame(String title, int timerAmount) throws HeadlessException {
         frame = new JFrame(title);
