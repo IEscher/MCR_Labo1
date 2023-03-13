@@ -4,13 +4,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
 public class ControlFrame {
-    private List<TimerSubject> timerList;
-    private List<JPanel> panels;
-    private JFrame frame;
+    private final ArrayList<String> captions = new ArrayList<>(Arrays.asList(
+            "Démarrer",
+            "Arrêter",
+            "Réinitialiser",
+            "Cadran romain",
+            "Cadran arabe",
+            "Numérique"
+    ));
+
+    private final List<TimerSubject> timerList;
+    private final JFrame frame;
 
     public ControlFrame(String title, int timerAmount) throws HeadlessException {
         frame = new JFrame(title);
@@ -18,44 +28,74 @@ public class ControlFrame {
         for (int i = 0; i < timerAmount; i++) {
             TimerSubject timer = new TimerSubject();
             timerList.add(timer);
-            frame.add(createLinePanel(timerList.get(i)));
+            frame.add(createLinePanel(timer));
         }
+
+        // Buttons for all timers
+        JPanel p = new JPanel();
+        p.add(new JLabel("Tous les chronos"));
+        for (int i = 3 ; i < 6 ; ++i) {
+            JButton b = new JButton(captions.get(i));
+            ActionListener al = new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    switch (captions.indexOf(ae.getActionCommand())) {
+                        case 3 -> new TimerFrame(timerList,
+                                "cadran_chiffres_romains.jpg",
+                                Color.BLACK, Color.GRAY, Color.YELLOW);
+                        case 4 -> new TimerFrame(timerList,
+                                "cadran_chiffres_arabes.jpg",
+                                Color.BLACK, Color.BLUE, Color.RED);
+                        case 5 -> new TimerFrame(timerList);
+                        default -> System.err.println("Unknown action");
+                    }
+                }
+            };
+            b.addActionListener(al);
+            p.add(b);
+        }
+
+        frame.add(p);
+        frame.setLayout(new GridLayout(timerAmount+1, 0));
     }
 
     public void show() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setPreferredSize(new Dimension(400, 200));
         frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
     private JPanel createLinePanel(TimerSubject ts) {
         JPanel p = new JPanel();
 
-        p.add(new JTextArea(ts.getName()));
+        p.add(new JLabel(ts.getName()));
 
-        JButton b0 = new JButton("Démarrer");
-        JButton b1 = new JButton("Arrêter");
-        JButton b2 = new JButton("Réinitialiser");
-        JButton b3 = new JButton("Cadran romain");
-        JButton b4 = new JButton("Cadran arabe");
-        JButton b5 = new JButton("Numérique");
-
-        p.add(b0);
-        p.add(b1);
-        p.add(b2);
-        p.add(b3);
-        p.add(b4);
-        p.add(b5);
-
-        p.setLayout(new FlowLayout(FlowLayout.RIGHT));
-        b3.addActionListener(new ActionListener() {
+        ActionListener al = new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-                TimerFrame tf = new TimerFrame(ts);
-                tf.show();
+                switch (captions.indexOf(ae.getActionCommand())) {
+                    case 0 -> ts.start();
+                    case 1 -> ts.stop();
+                    case 2 -> ts.reset();
+                    case 3 -> new TimerFrame(ts,
+                            "cadran_chiffres_romains.jpg",
+                            Color.BLACK, Color.GRAY, Color.YELLOW);
+                    case 4 -> new TimerFrame(ts,
+                            "cadran_chiffres_arabes.jpg",
+                            Color.BLACK, Color.BLUE, Color.RED);
+                    case 5 -> new TimerFrame(ts);
+                    default -> System.err.println("Unknown action");
+                }
             }
-        });
+        };
+
+        for (String s : captions) {
+            JButton b = new JButton(s);
+            p.add(b);
+            b.addActionListener(al);
+        }
+
+        p.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
         return p;
     }

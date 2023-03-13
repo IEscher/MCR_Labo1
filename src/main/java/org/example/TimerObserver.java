@@ -1,12 +1,21 @@
 package org.example;
 
+import java.util.List;
+
 public class TimerObserver implements IObserver {
     private int time;
-    private Subject associatedSubject;
+    protected TimerSubject associatedSubject;
 
-    TimerObserver(Subject subject) {
+    TimerObserver(TimerSubject subject) {
         subject.attach(this);
         associatedSubject = subject;
+    }
+
+    TimerObserver(List<TimerSubject> subjects) {
+        for(TimerSubject s : subjects) {
+            s.attach(this);
+        }
+        associatedSubject = null;
     }
 
     public void close() {
@@ -15,6 +24,10 @@ public class TimerObserver implements IObserver {
 
     public void update(int time) {
         this.time = time;
-        System.out.println("It has been notified of the time: " + time);
+        System.out.println(associatedSubject.getName() + " has been notified of the time: " + time);
+    }
+
+    public int getTime() {
+        return time;
     }
 }

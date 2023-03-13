@@ -6,13 +6,13 @@ import java.util.TimerTask;
 public class TimerSubject extends Subject {
     private static int timerNumber = 0;
     private int time;
-    private String name;
+    private final String name;
     private Timer timer;
+    boolean isRunning = false;
 
     public TimerSubject() {
         name = "Chrono#" + ++timerNumber;
         time = 0;
-        timer = new Timer();
     }
 
     class TimerUpdater extends TimerTask {
@@ -42,15 +42,23 @@ public class TimerSubject extends Subject {
     }
 
     public void start() {
-        timer.schedule(new TimerUpdater(), 0, 1000);
+        if(!isRunning) {
+            isRunning = true;
+            timer = new Timer();
+            timer.schedule(new TimerUpdater(), 0, 100);
+        }
     }
 
     public void stop() {
+        isRunning = false;
         timer.cancel();
     }
 
     public void reset() {
+        isRunning = false;
         timer.cancel();
+        timer.purge();
         time = 0;
+        notifyObservers();
     }
 }
