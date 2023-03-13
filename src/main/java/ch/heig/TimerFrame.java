@@ -158,6 +158,24 @@ public class TimerFrame {
             protected void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, this);
                 g.drawString(to.getName(), BASE_SIZE / 2 - 30, BASE_SIZE / 2);
+                // get a Graphics2D object from Graphics
+                Graphics2D g2d = (Graphics2D) g;
+                g2d.setStroke(new BasicStroke(3));
+                // draw the hour hand
+                g2d.setColor(hourColor);
+                g2d.rotate(Math.toRadians(to.getHours() * 30), BASE_SIZE / 2, BASE_SIZE / 2);
+                g2d.drawLine(BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2 - 40);
+                g2d.rotate(Math.toRadians(-to.getHours() * 30), BASE_SIZE / 2, BASE_SIZE / 2);
+                // draw the minute hand
+                g2d.setColor(minuteColor);
+                g2d.rotate(Math.toRadians(to.getMinutes() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
+                g2d.drawLine(BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2 - 60);
+                g2d.rotate(Math.toRadians(-to.getMinutes() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
+                // draw the second hand
+                g2d.setColor(secondColor);
+                g2d.rotate(Math.toRadians(to.getSeconds() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
+                g2d.drawLine(BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2 - 80);
+                g2d.rotate(Math.toRadians(-to.getSeconds() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
             }
 
             @Override

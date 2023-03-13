@@ -45,7 +45,7 @@ public class TimerSubject extends Subject {
         if(!isRunning) {
             isRunning = true;
             timer = new Timer();
-            timer.schedule(new TimerUpdater(), 0, 100);
+            timer.schedule(new TimerUpdater(), 0, 1000);
         }
     }
 
