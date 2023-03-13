@@ -8,6 +8,7 @@ public class TimerSubject extends Subject {
     private int time;
     private final String name;
     private Timer timer;
+    boolean isRunning = false;
 
     public TimerSubject() {
         name = "Chrono#" + ++timerNumber;
@@ -41,17 +42,23 @@ public class TimerSubject extends Subject {
     }
 
     public void start() {
-        timer = new Timer();
-        timer.schedule(new TimerUpdater(), 0, 1000);
+        if(!isRunning) {
+            isRunning = true;
+            timer = new Timer();
+            timer.schedule(new TimerUpdater(), 0, 100);
+        }
     }
 
     public void stop() {
+        isRunning = false;
         timer.cancel();
     }
 
     public void reset() {
+        isRunning = false;
         timer.cancel();
         timer.purge();
         time = 0;
+        notifyObservers();
     }
 }

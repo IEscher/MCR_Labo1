@@ -26,4 +26,8 @@ public class TimerObserver implements IObserver {
         this.time = time;
         System.out.println(associatedSubject.getName() + " has been notified of the time: " + time);
     }
+
+    public int getTime() {
+        return time;
+    }
 }

@@ -47,6 +47,7 @@ public class ControlFrame {
                                 "cadran_chiffres_arabes.jpg",
                                 Color.BLACK, Color.BLUE, Color.RED);
                         case 5 -> new TimerFrame(timerList);
+                        default -> System.err.println("Unknown action");
                     }
                 }
             };
@@ -83,6 +84,7 @@ public class ControlFrame {
                             "cadran_chiffres_arabes.jpg",
                             Color.BLACK, Color.BLUE, Color.RED);
                     case 5 -> new TimerFrame(ts);
+                    default -> System.err.println("Unknown action");
                 }
             }
         };

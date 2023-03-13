@@ -7,12 +7,12 @@ import java.awt.event.ComponentEvent;
 import java.util.List;
 
 public class TimerFrame extends TimerObserver {
-
     private final JFrame frame;
     private final int BASE_SIZE = 200;
 
     /**
      * Constructeur utilisé pour afficher un chonromètre singulier numérique.
+     *
      * @param subject Sujet à obeserver
      */
     TimerFrame(TimerSubject subject) {
@@ -24,12 +24,13 @@ public class TimerFrame extends TimerObserver {
 
     /**
      * Constructeur utilisé pour afficher plusieurs chronomètres numériques
+     *
      * @param subjects Liste des sujets à observer
      */
     TimerFrame(List<TimerSubject> subjects) {
         super(subjects);
         frame = new JFrame();
-        for(TimerSubject s : subjects) {
+        for (TimerSubject s : subjects) {
             addTimerToFrame(s);
         }
         this.showMultiple(subjects);
@@ -37,9 +38,10 @@ public class TimerFrame extends TimerObserver {
 
     /**
      * Constructeur utilisé pour afficher un choronomètre graphique.
-     * @param subject Sujet à observer
-     * @param fileName Chemin du fichier à utiliser comme arrière-plan (200x200)
-     * @param hourColor Couleur de l'aiguille des heures
+     *
+     * @param subject     Sujet à observer
+     * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
+     * @param hourColor   Couleur de l'aiguille des heures
      * @param minuteColor Couleur de l'aiguille des minutes
      * @param secondColor Couleurs de l'aiguilles des secondes.
      */
@@ -52,9 +54,10 @@ public class TimerFrame extends TimerObserver {
 
     /**
      * Constructeur utilisé pour afficher plusieurs choronomètres graphique.
-     * @param subjects Liste des sujets à observer
-     * @param fileName Chemin du fichier à utiliser comme arrière-plan (200x200)
-     * @param hourColor Couleur de l'aiguille des heures
+     *
+     * @param subjects    Liste des sujets à observer
+     * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
+     * @param hourColor   Couleur de l'aiguille des heures
      * @param minuteColor Couleur de l'aiguille des minutes
      * @param secondColor Couleurs de l'aiguilles des secondes.
      */
@@ -62,11 +65,19 @@ public class TimerFrame extends TimerObserver {
         super(subjects);
         frame = new JFrame();
 
-        for(TimerSubject s : subjects) {
+        for (TimerSubject s : subjects) {
             addGraphicalTimerToFrame(s, fileName, hourColor, minuteColor, secondColor);
         }
 
         this.showMultiple(subjects);
+    }
+
+    @Override
+    public void update(int time) {
+        super.update(time);
+//        frame.setTitle(associatedSubject.getName() + " - " + time);
+        frame.revalidate();
+        frame.repaint();
     }
 
     /**
@@ -82,6 +93,7 @@ public class TimerFrame extends TimerObserver {
 
     /**
      * Fonction appliquant les paramètres spécifiques à la fenêtre affichant tous les timers en même temps.
+     *
      * @param subjects Liste des sujets concernés par la fenêtre.
      */
     public void showMultiple(List<TimerSubject> subjects) {
@@ -102,16 +114,16 @@ public class TimerFrame extends TimerObserver {
                     frame.setMinimumSize(new Dimension(COMPONENTS_SIZE + 50, BASE_SIZE + 50));
                 }
 
-                if ((d.getHeight() >=COMPONENTS_SIZE + 50) && (d.getWidth() < COMPONENTS_SIZE + 50)) {
+                if ((d.getHeight() >= COMPONENTS_SIZE + 50) && (d.getWidth() < COMPONENTS_SIZE + 50)) {
                     frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-                } else if (d.getWidth() >= COMPONENTS_SIZE + 50 &&(d.getHeight() < COMPONENTS_SIZE + 50)) {
+                } else if (d.getWidth() >= COMPONENTS_SIZE + 50 && (d.getHeight() < COMPONENTS_SIZE + 50)) {
                     frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
                 }
             }
         }
 
         frame.addComponentListener(new ResizeListener());
-        frame.setPreferredSize(new Dimension(BASE_SIZE * subjects.size() + 50,BASE_SIZE + 50));
+        frame.setPreferredSize(new Dimension(BASE_SIZE * subjects.size() + 50, BASE_SIZE + 50));
         frame.setMinimumSize(new Dimension(BASE_SIZE * subjects.size() + 50, BASE_SIZE + 50));
 
         show();
@@ -119,9 +131,10 @@ public class TimerFrame extends TimerObserver {
 
     /**
      * Genère un JPanel avec une image et des aiguilles et l'ajoute à la frame.
-     * @param ts Sujet que l'on doit observer.
-     * @param fileName Chemin du fichier à utiliser comme arrière-plan (200x200)
-     * @param hourColor Couleur de l'aiguille des heures
+     *
+     * @param ts          Sujet que l'on doit observer.
+     * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
+     * @param hourColor   Couleur de l'aiguille des heures
      * @param minuteColor Couleur de l'aiguille des minutes
      * @param secondColor Couleurs de l'aiguilles des secondes.
      */
@@ -147,12 +160,55 @@ public class TimerFrame extends TimerObserver {
         frame.add(p);
     }
 
+
+
     /**
-     * Genère un JPanel pour l'affichage numérique et l'ajoute à la frame.
+     * Génère un JPanel pour l'affichage numérique et l'ajoute à la frame.
+     *
      * @param ts Sujet que l'on doit observer.
      */
     private void addTimerToFrame(TimerSubject ts) {
         // TODO : Implémenter ceci (Ajoute le compteur d'heures, minutes et secondes dans un JPanel qui est ensuite ajouté à la frame.
         // Similaire à addGraphicalTimerToFrame mais sans l'image quoi.
+        class DisplayNumeric extends JPanel {
+            @Override
+            protected void paintComponent(Graphics g) {
+                String timeString = String.format("%s: %02dh %02dm %02ds",
+                        ts.getName(),
+                        getHours(),
+                        getMinutes(),
+                        getSeconds());
+
+                // Get the FontMetrics
+                FontMetrics metrics = g.getFontMetrics(g.getFont());
+                // Determine the X coordinate for the text
+                int x = (BASE_SIZE - metrics.stringWidth(timeString)) / 2;
+                // Determine the Y coordinate for the text (note we add the ascent, as in java 2d 0 is top of the screen)
+                int y = ((BASE_SIZE - metrics.getHeight()) / 2) + metrics.getAscent();
+                // Draw the String
+                g.drawString(timeString, x, y);
+            }
+
+            @Override
+            public Dimension getPreferredSize() {
+                return new Dimension(BASE_SIZE, BASE_SIZE);
+            }
+        }
+
+        JPanel p = new JPanel();
+        p.add(new DisplayNumeric());
+        frame.add(p);
+    }
+
+    public int getSeconds() {
+        return associatedSubject.getTime() % 60;
+    }
+
+    public int getMinutes() {
+        return (associatedSubject.getTime() / 60) % 60;
+    }
+
+    public int getHours() {
+        return (associatedSubject.getTime() / 3600) % 24;
     }
 }
