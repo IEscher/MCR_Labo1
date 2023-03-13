@@ -1,24 +1,26 @@
-package org.example;
+package ch.heig;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.LinkedList;
 import java.util.List;
 
-public class TimerFrame extends TimerObserver {
+public class TimerFrame {
     private final JFrame frame;
     private final int BASE_SIZE = 200;
-
+    private final List<TimerObserver> observers;
     /**
      * Constructeur utilisé pour afficher un chonromètre singulier numérique.
      *
      * @param subject Sujet à obeserver
      */
     TimerFrame(TimerSubject subject) {
-        super(subject);
+        observers = new LinkedList<>();
         frame = new JFrame();
-        addTimerToFrame(subject);
+        observers.add(new TimerObserver(subject, this));
+        addTimerToFrame(observers.get(0));
         this.show();
     }
 
@@ -28,12 +30,18 @@ public class TimerFrame extends TimerObserver {
      * @param subjects Liste des sujets à observer
      */
     TimerFrame(List<TimerSubject> subjects) {
-        super(subjects);
+        observers = new LinkedList<>();
         frame = new JFrame();
+
         for (TimerSubject s : subjects) {
-            addTimerToFrame(s);
+            observers.add(new TimerObserver(s, this));
         }
-        this.showMultiple(subjects);
+
+        for (TimerObserver o : observers) {
+            addTimerToFrame(o);
+        }
+
+        this.showMultiple(observers);
     }
 
     /**
@@ -46,9 +54,10 @@ public class TimerFrame extends TimerObserver {
      * @param secondColor Couleurs de l'aiguilles des secondes.
      */
     TimerFrame(TimerSubject subject, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
-        super(subject);
+        observers = new LinkedList<>();
         frame = new JFrame();
-        addGraphicalTimerToFrame(associatedSubject, fileName, hourColor, minuteColor, secondColor);
+        observers.add(new TimerObserver(subject, this));
+        addGraphicalTimerToFrame(observers.get(0), fileName, hourColor, minuteColor, secondColor);
         this.show();
     }
 
@@ -62,20 +71,22 @@ public class TimerFrame extends TimerObserver {
      * @param secondColor Couleurs de l'aiguilles des secondes.
      */
     TimerFrame(List<TimerSubject> subjects, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
-        super(subjects);
+        observers = new LinkedList<>();
         frame = new JFrame();
 
         for (TimerSubject s : subjects) {
-            addGraphicalTimerToFrame(s, fileName, hourColor, minuteColor, secondColor);
+            observers.add(new TimerObserver(s, this));
         }
 
-        this.showMultiple(subjects);
+        for (TimerObserver o : observers) {
+            addGraphicalTimerToFrame(o, fileName, hourColor, minuteColor, secondColor);
+        }
+
+        this.showMultiple(observers);
     }
 
-    @Override
+
     public void update(int time) {
-        super.update(time);
-//        frame.setTitle(associatedSubject.getName() + " - " + time);
         frame.revalidate();
         frame.repaint();
     }
@@ -94,9 +105,10 @@ public class TimerFrame extends TimerObserver {
     /**
      * Fonction appliquant les paramètres spécifiques à la fenêtre affichant tous les timers en même temps.
      *
-     * @param subjects Liste des sujets concernés par la fenêtre.
+     * @param observers Liste des sujets concernés par la fenêtre.
      */
-    public void showMultiple(List<TimerSubject> subjects) {
+    public void showMultiple(List<TimerObserver> observers) {
+        final int COMPONENTS_SIZE = BASE_SIZE * observers.size();
         class ResizeListener extends ComponentAdapter {
             // TODO : Trouver une manière plus clean d'espacer les horloges. J'ai du rajouter des + 50 partout
 
@@ -105,7 +117,6 @@ public class TimerFrame extends TimerObserver {
 
             public void componentResized(ComponentEvent e) {
                 Dimension d = frame.getSize();
-                final int COMPONENTS_SIZE = BASE_SIZE * subjects.size();
                 if (d.getHeight() >= COMPONENTS_SIZE + 50 && d.getWidth() >= COMPONENTS_SIZE + 50) {
                     frame.setMinimumSize(new Dimension(BASE_SIZE + 50, BASE_SIZE + 50));
                 } else if (d.getHeight() >= COMPONENTS_SIZE + 50 && d.getWidth() < COMPONENTS_SIZE + 50) {
@@ -123,8 +134,8 @@ public class TimerFrame extends TimerObserver {
         }
 
         frame.addComponentListener(new ResizeListener());
-        frame.setPreferredSize(new Dimension(BASE_SIZE * subjects.size() + 50, BASE_SIZE + 50));
-        frame.setMinimumSize(new Dimension(BASE_SIZE * subjects.size() + 50, BASE_SIZE + 50));
+        frame.setPreferredSize(new Dimension(COMPONENTS_SIZE + 50, BASE_SIZE + 50));
+        frame.setMinimumSize(new Dimension(COMPONENTS_SIZE + 50, BASE_SIZE + 50));
 
         show();
     }
@@ -132,13 +143,13 @@ public class TimerFrame extends TimerObserver {
     /**
      * Genère un JPanel avec une image et des aiguilles et l'ajoute à la frame.
      *
-     * @param ts          Sujet que l'on doit observer.
+     * @param to          Observeur à ajouter
      * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
      * @param hourColor   Couleur de l'aiguille des heures
      * @param minuteColor Couleur de l'aiguille des minutes
      * @param secondColor Couleurs de l'aiguilles des secondes.
      */
-    private void addGraphicalTimerToFrame(TimerSubject ts, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
+    private void addGraphicalTimerToFrame(TimerObserver to, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         Image image = Toolkit.getDefaultToolkit().getImage(fileName)
                 .getScaledInstance(BASE_SIZE, BASE_SIZE, Image.SCALE_SMOOTH);
 
@@ -146,7 +157,7 @@ public class TimerFrame extends TimerObserver {
             @Override
             protected void paintComponent(Graphics g) {
                 g.drawImage(image, 0, 0, this);
-                g.drawString(ts.getName(), BASE_SIZE / 2 - 30, BASE_SIZE / 2);
+                g.drawString(to.getName(), BASE_SIZE / 2 - 30, BASE_SIZE / 2);
             }
 
             @Override
@@ -165,19 +176,19 @@ public class TimerFrame extends TimerObserver {
     /**
      * Génère un JPanel pour l'affichage numérique et l'ajoute à la frame.
      *
-     * @param ts Sujet que l'on doit observer.
+     * @param to Observeur à ajouter
      */
-    private void addTimerToFrame(TimerSubject ts) {
+    private void addTimerToFrame(TimerObserver to) {
         // TODO : Implémenter ceci (Ajoute le compteur d'heures, minutes et secondes dans un JPanel qui est ensuite ajouté à la frame.
         // Similaire à addGraphicalTimerToFrame mais sans l'image quoi.
         class DisplayNumeric extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
                 String timeString = String.format("%s: %02dh %02dm %02ds",
-                        ts.getName(),
-                        getHours(),
-                        getMinutes(),
-                        getSeconds());
+                        to.getName(),
+                        to.getHours(),
+                        to.getMinutes(),
+                        to.getSeconds());
 
                 // Get the FontMetrics
                 FontMetrics metrics = g.getFontMetrics(g.getFont());
@@ -198,17 +209,5 @@ public class TimerFrame extends TimerObserver {
         JPanel p = new JPanel();
         p.add(new DisplayNumeric());
         frame.add(p);
-    }
-
-    public int getSeconds() {
-        return associatedSubject.getTime() % 60;
-    }
-
-    public int getMinutes() {
-        return (associatedSubject.getTime() / 60) % 60;
-    }
-
-    public int getHours() {
-        return (associatedSubject.getTime() / 3600) % 24;
     }
 }

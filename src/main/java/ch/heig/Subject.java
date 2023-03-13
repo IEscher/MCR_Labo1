@@ -1,4 +1,4 @@
-package org.example;
+package ch.heig;
 
 import java.util.LinkedList;
 import java.util.List;
