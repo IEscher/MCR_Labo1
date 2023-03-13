@@ -1,4 +1,4 @@
-package org.example;
+package ch.heig;
 
 import java.util.Timer;
 import java.util.TimerTask;

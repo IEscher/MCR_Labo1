@@ -1,4 +1,4 @@
-package org.example;
+package ch.heig;
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,7 +24,9 @@ public class ControlFrame {
 
     public ControlFrame(String title, int timerAmount) throws HeadlessException {
         frame = new JFrame(title);
+
         this.timerList = new LinkedList<>();
+
         for (int i = 0; i < timerAmount; i++) {
             TimerSubject timer = new TimerSubject();
             timerList.add(timer);
