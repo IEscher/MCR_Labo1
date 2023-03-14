@@ -12,7 +12,7 @@ public class TimerFrame {
     private final int BASE_SIZE = 200;
     private final List<TimerObserver> observers;
     /**
-     * Constructeur utilisé pour afficher un chonromètre singulier numérique.
+     * Constructeur utilisé pour afficher un chronomètre singulier numérique.
      *
      * @param subject Sujet à obeserver
      */
@@ -45,13 +45,13 @@ public class TimerFrame {
     }
 
     /**
-     * Constructeur utilisé pour afficher un choronomètre graphique.
+     * Constructeur utilisé pour afficher un chronomètre graphique.
      *
      * @param subject     Sujet à observer
      * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
      * @param hourColor   Couleur de l'aiguille des heures
      * @param minuteColor Couleur de l'aiguille des minutes
-     * @param secondColor Couleurs de l'aiguilles des secondes.
+     * @param secondColor Couleurs de l'aiguille des secondes.
      */
     TimerFrame(TimerSubject subject, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         observers = new LinkedList<>();
@@ -62,13 +62,13 @@ public class TimerFrame {
     }
 
     /**
-     * Constructeur utilisé pour afficher plusieurs choronomètres graphique.
+     * Constructeur utilisé pour afficher plusieurs chronomètres graphique.
      *
      * @param subjects    Liste des sujets à observer
      * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
      * @param hourColor   Couleur de l'aiguille des heures
      * @param minuteColor Couleur de l'aiguille des minutes
-     * @param secondColor Couleurs de l'aiguilles des secondes.
+     * @param secondColor Couleurs de l'aiguille des secondes.
      */
     TimerFrame(List<TimerSubject> subjects, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         observers = new LinkedList<>();
@@ -86,7 +86,7 @@ public class TimerFrame {
     }
 
 
-    public void update(int time) {
+    public void reDraw() {
         frame.revalidate();
         frame.repaint();
     }
@@ -141,13 +141,13 @@ public class TimerFrame {
     }
 
     /**
-     * Genère un JPanel avec une image et des aiguilles et l'ajoute à la frame.
+     * Génère un JPanel avec une image et des aiguilles et l'ajoute à la frame.
      *
      * @param to          Observeur à ajouter
      * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
      * @param hourColor   Couleur de l'aiguille des heures
      * @param minuteColor Couleur de l'aiguille des minutes
-     * @param secondColor Couleurs de l'aiguilles des secondes.
+     * @param secondColor Couleurs de l'aiguille des secondes.
      */
     private void addGraphicalTimerToFrame(TimerObserver to, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         Image image = Toolkit.getDefaultToolkit().getImage(fileName)
@@ -156,26 +156,24 @@ public class TimerFrame {
         class DisplayGraphics extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
+                int middle = BASE_SIZE / 2;
                 g.drawImage(image, 0, 0, this);
-                g.drawString(to.getName(), BASE_SIZE / 2 - 30, BASE_SIZE / 2);
-                // get a Graphics2D object from Graphics
+                g.drawString(to.getName(), middle - 30, middle);
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setStroke(new BasicStroke(3));
+
                 // draw the hour hand
                 g2d.setColor(hourColor);
-                g2d.rotate(Math.toRadians(to.getHours() * 30), BASE_SIZE / 2, BASE_SIZE / 2);
-                g2d.drawLine(BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2 - 40);
-                g2d.rotate(Math.toRadians(-to.getHours() * 30), BASE_SIZE / 2, BASE_SIZE / 2);
+                g2d.rotate(Math.toRadians(to.getHours() * 30), middle, middle);
+                g2d.drawLine(middle, middle, middle, middle - 40);
                 // draw the minute hand
                 g2d.setColor(minuteColor);
-                g2d.rotate(Math.toRadians(to.getMinutes() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
-                g2d.drawLine(BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2 - 60);
-                g2d.rotate(Math.toRadians(-to.getMinutes() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
+                g2d.rotate(Math.toRadians(to.getMinutes() * 6), middle, middle);
+                g2d.drawLine(middle, middle, middle, middle - 60);
                 // draw the second hand
                 g2d.setColor(secondColor);
-                g2d.rotate(Math.toRadians(to.getSeconds() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
-                g2d.drawLine(BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2, BASE_SIZE / 2 - 80);
-                g2d.rotate(Math.toRadians(-to.getSeconds() * 6), BASE_SIZE / 2, BASE_SIZE / 2);
+                g2d.rotate(Math.toRadians(to.getSeconds() * 6), middle, middle);
+                g2d.drawLine(middle, middle, middle, middle - 80);
             }
 
             @Override
@@ -197,8 +195,6 @@ public class TimerFrame {
      * @param to Observeur à ajouter
      */
     private void addTimerToFrame(TimerObserver to) {
-        // TODO : Implémenter ceci (Ajoute le compteur d'heures, minutes et secondes dans un JPanel qui est ensuite ajouté à la frame.
-        // Similaire à addGraphicalTimerToFrame mais sans l'image quoi.
         class DisplayNumeric extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
