@@ -1,12 +1,147 @@
 <?xml version="1.0" encoding="iso-8859-15" standalone="no"?>
 <classDiagram>
   <diagramElements defaultViewEntities="ALL" defaultViewEnum="true" defaultViewMethods="TYPE_AND_NAME" defaultVisibleTypes="true" informations="" name="MCR - Laboratoire 1 : Observateur">
-    <entity entityType="CLASS" id="512" isAbstract="false" name="TimerObserverGUI" visibility="PUBLIC"/>
-    <association aggregation="NONE" direction="FIRST_TO_SECOND" id="448" name="subject">
-      <role componentId="106" name="" visibility="PRIVATE">
+    <association aggregation="AGGREGATE" direction="FIRST_TO_SECOND" id="3125" name="list of timers">
+      <role componentId="2521" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+      <role componentId="3" name="" visibility="PRIVATE">
         <multiplicity>
           <min>0</min>
           <max>2147483647</max>
+        </multiplicity>
+      </role>
+    </association>
+    <association aggregation="AGGREGATE" direction="FIRST_TO_SECOND" id="3018" name="list of observers">
+      <role componentId="1569" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>0</min>
+          <max>2147483647</max>
+        </multiplicity>
+      </role>
+      <role componentId="106" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+    </association>
+    <association aggregation="AGGREGATE" direction="FIRST_TO_SECOND" id="3013" name="associated frame">
+      <role componentId="106" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+      <role componentId="1569" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+    </association>
+    <entity entityType="CLASS" id="2521" isAbstract="false" name="ControlFrame" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="true" name="captions" type="ArrayList&lt;String&gt;" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="timerList" type="List&lt;TimerSubject&gt;" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="frame" type="JFrame" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="ControlFrame" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="title" type="String"/>
+        <variable const="false" name="timerAmount" type="int"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="show" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="createLinePanel" returnType="JPanel" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="ts" type="TimerSubject"/>
+      </method>
+    </entity>
+    <entity entityType="CLASS" id="1569" isAbstract="false" name="TimerFrame" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="frame" type="JFrame" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="BASE_SIZE" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="observers" type="List&lt;TimerObserver&gt;" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerFrame" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerFrame" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="subject" type="TimerSubject"/>
+      </method>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerFrame" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="subjects" type="List&lt;TimerSubject&gt;"/>
+      </method>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerFrame" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="subject" type="TimerSubject"/>
+        <variable const="false" name="fileName" type="String"/>
+        <variable const="false" name="hourColor" type="Color"/>
+        <variable const="false" name="minuteColor" type="Color"/>
+        <variable const="false" name="secondColor" type="Color"/>
+      </method>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerFrame" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="subjects" type="List&lt;TimerSubject&gt;"/>
+        <variable const="false" name="filename" type="String"/>
+        <variable const="false" name="hourColor" type="Color"/>
+        <variable const="false" name="minuteColor" type="Color"/>
+        <variable const="false" name="secondColor" type="Color"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="reDraw" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="show" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="showMultiple" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="observers" type="List&lt;TimerObserver&gt;"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="addGraphicalTimerToFrame" returnType="void" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="to" type="TimerObserver"/>
+        <variable const="false" name="fileName" type="String"/>
+        <variable const="false" name="hourColor" type="Color"/>
+        <variable const="false" name="minuteColor" type="Color"/>
+        <variable const="false" name="secondColor" type="Color"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="addTimerToFrame" returnType="void" view="DEFAULT" visibility="PRIVATE">
+        <variable const="false" name="to" type="TimerObserver"/>
+      </method>
+    </entity>
+    <association aggregation="AGGREGATE" direction="FIRST_TO_SECOND" id="1535" name="subscribers">
+      <role componentId="1" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
+        </multiplicity>
+      </role>
+      <role componentId="978" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>0</min>
+          <max>2147483647</max>
+        </multiplicity>
+      </role>
+    </association>
+    <inheritance id="1111" innerClass="true">
+      <child>3</child>
+      <parent>1101</parent>
+    </inheritance>
+    <inheritance id="1110">
+      <child>1101</child>
+      <parent>1109</parent>
+    </inheritance>
+    <entity entityType="CLASS" id="1109" isAbstract="false" name="TimerTask" visibility="PUBLIC"/>
+    <entity entityType="CLASS" id="1101" isAbstract="false" name="TimerUpdater" visibility="PUBLIC">
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerUpdater" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="run" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="INTERFACE" id="978" isAbstract="true" name="IObserver" visibility="PUBLIC">
+      <method isAbstract="true" isStatic="false" name="update" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="time" type="int"/>
+      </method>
+    </entity>
+    <inheritance id="37">
+      <child>3</child>
+      <parent>1</parent>
+    </inheritance>
+    <inheritance id="107">
+      <child>106</child>
+      <parent>978</parent>
+    </inheritance>
+    <association aggregation="NONE" direction="FIRST_TO_SECOND" id="448" name="subscribed to">
+      <role componentId="106" name="" visibility="PRIVATE">
+        <multiplicity>
+          <min>1</min>
+          <max>1</max>
         </multiplicity>
       </role>
       <role componentId="3" name="" visibility="PRIVATE">
@@ -16,202 +151,386 @@
         </multiplicity>
       </role>
     </association>
-    <inheritance id="107">
-      <child>106</child>
-      <parent>2</parent>
-    </inheritance>
-    <entity entityType="CLASS" id="106" isAbstract="false" name="TimerObserver" visibility="PUBLIC">
-      <attribute const="false" defaultValue="" isStatic="false" name="observerTime" type="int" visibility="PRIVATE"/>
-      <method isAbstract="false" isStatic="false" name="update" returnType="void" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="time" type="int"/>
-      </method>
-    </entity>
-    <inheritance id="37">
-      <child>3</child>
-      <parent>1</parent>
-    </inheritance>
-    <association aggregation="NONE" direction="FIRST_TO_SECOND" id="4" name="observers">
-      <role componentId="1" name="" visibility="PRIVATE">
-        <multiplicity>
-          <min>1</min>
-          <max>1</max>
-        </multiplicity>
-      </role>
-      <role componentId="2" name="" visibility="PRIVATE">
-        <multiplicity>
-          <min>0</min>
-          <max>2147483647</max>
-        </multiplicity>
-      </role>
-    </association>
-    <entity entityType="CLASS" id="3" isAbstract="false" name="TimerSubject" visibility="PUBLIC">
-      <attribute const="false" defaultValue="" isStatic="false" name="timer" type="Timer" visibility="PRIVATE"/>
-      <attribute const="false" defaultValue="" isStatic="false" name="subjectTime" type="int" visibility="PRIVATE"/>
-      <method isAbstract="false" isStatic="false" name="setTime" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
-      <method isAbstract="false" isStatic="false" name="notify" returnType="void" view="DEFAULT" visibility="PUBLIC">
-        <variable const="false" name="time" type="int"/>
-      </method>
-    </entity>
-    <entity entityType="CLASS" id="2" isAbstract="true" name="Observer" visibility="PUBLIC">
-      <method isAbstract="true" isStatic="false" name="update" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
-    </entity>
     <entity entityType="CLASS" id="1" isAbstract="true" name="Subject" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="observerList" type="List&lt;IObserver&gt;" visibility="PROTECTED"/>
+      <method is-constructor="true" isAbstract="true" isStatic="false" name="Subject" returnType="" view="DEFAULT" visibility="PUBLIC"/>
       <method isAbstract="false" isStatic="false" name="attach" returnType="void" view="DEFAULT" visibility="PUBLIC">
         <variable const="false" name="o" type="Observer"/>
       </method>
       <method isAbstract="false" isStatic="false" name="detach" returnType="void" view="DEFAULT" visibility="PUBLIC">
         <variable const="false" name="o" type="Observer"/>
       </method>
-      <method isAbstract="false" isStatic="false" name="notify" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="notifyObservers" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="3" isAbstract="false" name="TimerSubject" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="timer" type="Timer" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="time" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="name" type="String" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="true" name="timerNumber" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="isRunning" type="boolean" visibility="PRIVATE"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerSubject" returnType="" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="notifyObservers" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="time" type="int"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="setTime" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getTime" returnType="int" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getName" returnType="String" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="start" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="stop" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="reset" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+    </entity>
+    <entity entityType="CLASS" id="106" isAbstract="false" name="TimerObserver" visibility="PUBLIC">
+      <attribute const="false" defaultValue="" isStatic="false" name="time" type="int" visibility="PRIVATE"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="associatedSubject" type="TimerSubject" visibility="PROTECTED"/>
+      <attribute const="false" defaultValue="" isStatic="false" name="associatedFrame" type="TimerFrame" visibility="PROTECTED"/>
+      <method is-constructor="true" isAbstract="false" isStatic="false" name="TimerObserver" returnType="" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="subject" type="TimerSubject"/>
+        <variable const="false" name="frame" type="TimerFrame"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="close" returnType="void" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="update" returnType="void" view="DEFAULT" visibility="PUBLIC">
+        <variable const="false" name="time" type="int"/>
+      </method>
+      <method isAbstract="false" isStatic="false" name="getName" returnType="String" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getTime" returnType="int" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getSeconds" returnType="int" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getMinutes" returnType="int" view="DEFAULT" visibility="PUBLIC"/>
+      <method isAbstract="false" isStatic="false" name="getHours" returnType="int" view="DEFAULT" visibility="PUBLIC"/>
     </entity>
   </diagramElements>
   <umlView grid="10" name="Main view" open="true">
-    <relationView color="-12566464" relationId="4">
+    <relationView color="-12566464" relationId="448">
       <line>
         <point>
-          <x>241</x>
-          <y>121</y>
+          <x>641</x>
+          <y>281</y>
         </point>
         <point>
-          <x>421</x>
-          <y>121</y>
+          <x>461</x>
+          <y>281</y>
         </point>
       </line>
       <labelAssociation>
-        <x>252</x>
-        <y>129</y>
-        <w>62</w>
+        <x>507</x>
+        <y>258</y>
+        <w>86</w>
         <h>16</h>
       </labelAssociation>
       <roleAssociation>
-        <x>248</x>
-        <y>126</y>
+        <x>605</x>
+        <y>285</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <roleAssociation>
-        <x>385</x>
+        <x>465</x>
+        <y>285</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <multipliciteAssociation>
+        <x>607</x>
+        <y>250</y>
+        <w>8</w>
+        <h>16</h>
+      </multipliciteAssociation>
+      <multipliciteAssociation>
+        <x>476</x>
+        <y>250</y>
+        <w>8</w>
+        <h>16</h>
+      </multipliciteAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="107">
+      <line>
+        <point>
+          <x>741</x>
+          <y>241</y>
+        </point>
+        <point>
+          <x>741</x>
+          <y>145</y>
+        </point>
+      </line>
+    </relationView>
+    <relationView color="-12566464" relationId="37">
+      <line>
+        <point>
+          <x>361</x>
+          <y>221</y>
+        </point>
+        <point>
+          <x>361</x>
+          <y>191</y>
+        </point>
+      </line>
+    </relationView>
+    <relationView color="-12566464" relationId="1110">
+      <line>
+        <point>
+          <x>371</x>
+          <y>521</y>
+        </point>
+        <point>
+          <x>371</x>
+          <y>491</y>
+        </point>
+        <point>
+          <x>551</x>
+          <y>491</y>
+        </point>
+        <point>
+          <x>551</x>
+          <y>466</y>
+        </point>
+      </line>
+    </relationView>
+    <relationView color="-12566464" relationId="1111">
+      <line>
+        <point>
+          <x>331</x>
+          <y>471</y>
+        </point>
+        <point>
+          <x>331</x>
+          <y>521</y>
+        </point>
+      </line>
+    </relationView>
+    <relationView color="-12566464" relationId="1535">
+      <line>
+        <point>
+          <x>451</x>
+          <y>121</y>
+        </point>
+        <point>
+          <x>641</x>
+          <y>121</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>509</x>
+        <y>97</y>
+        <w>72</w>
+        <h>16</h>
+      </labelAssociation>
+      <roleAssociation>
+        <x>455</x>
+        <y>125</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <roleAssociation>
+        <x>605</x>
         <y>125</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <multipliciteAssociation>
-        <x>258</x>
-        <y>96</y>
+        <x>455</x>
+        <y>99</y>
         <w>8</w>
         <h>16</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
-        <x>370</x>
-        <y>96</y>
+        <x>611</x>
+        <y>95</y>
         <w>22</w>
         <h>16</h>
       </multipliciteAssociation>
     </relationView>
-    <relationView color="-12566464" relationId="37">
+    <relationView color="-12566464" relationId="3013">
       <line>
         <point>
-          <x>141</x>
-          <y>241</y>
+          <x>771</x>
+          <y>461</y>
         </point>
         <point>
-          <x>141</x>
-          <y>181</y>
-        </point>
-      </line>
-    </relationView>
-    <relationView color="-12566464" relationId="107">
-      <line>
-        <point>
-          <x>521</x>
-          <y>261</y>
-        </point>
-        <point>
-          <x>521</x>
-          <y>151</y>
-        </point>
-      </line>
-    </relationView>
-    <relationView color="-12566464" relationId="448">
-      <line>
-        <point>
-          <x>421</x>
-          <y>301</y>
-        </point>
-        <point>
-          <x>241</x>
-          <y>301</y>
+          <x>771</x>
+          <y>571</y>
         </point>
       </line>
       <labelAssociation>
-        <x>368</x>
-        <y>309</y>
-        <w>46</w>
+        <x>776</x>
+        <y>510</y>
+        <w>108</w>
         <h>16</h>
       </labelAssociation>
       <roleAssociation>
-        <x>385</x>
-        <y>305</y>
+        <x>775</x>
+        <y>465</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <roleAssociation>
-        <x>245</x>
-        <y>305</y>
+        <x>775</x>
+        <y>549</y>
         <w>0</w>
         <h>16</h>
       </roleAssociation>
       <multipliciteAssociation>
-        <x>387</x>
-        <y>270</y>
-        <w>22</w>
+        <x>749</x>
+        <y>467</y>
+        <w>8</w>
         <h>16</h>
       </multipliciteAssociation>
       <multipliciteAssociation>
-        <x>256</x>
-        <y>270</y>
+        <x>751</x>
+        <y>548</y>
         <w>8</w>
         <h>16</h>
       </multipliciteAssociation>
     </relationView>
-    <componentView color="-2079" componentID="1" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <relationView color="-12566464" relationId="3018">
+      <line>
+        <point>
+          <x>921</x>
+          <y>571</y>
+        </point>
+        <point>
+          <x>921</x>
+          <y>461</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>933</x>
+        <y>510</y>
+        <w>102</w>
+        <h>16</h>
+      </labelAssociation>
+      <roleAssociation>
+        <x>925</x>
+        <y>549</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <roleAssociation>
+        <x>925</x>
+        <y>465</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <multipliciteAssociation>
+        <x>888</x>
+        <y>546</y>
+        <w>22</w>
+        <h>16</h>
+      </multipliciteAssociation>
+      <multipliciteAssociation>
+        <x>898</x>
+        <y>465</y>
+        <w>8</w>
+        <h>16</h>
+      </multipliciteAssociation>
+    </relationView>
+    <relationView color="-12566464" relationId="3125">
+      <line>
+        <point>
+          <x>191</x>
+          <y>641</y>
+        </point>
+        <point>
+          <x>191</x>
+          <y>381</y>
+        </point>
+        <point>
+          <x>251</x>
+          <y>381</y>
+        </point>
+      </line>
+      <labelAssociation>
+        <x>99</x>
+        <y>510</y>
+        <w>80</w>
+        <h>16</h>
+      </labelAssociation>
+      <roleAssociation>
+        <x>195</x>
+        <y>619</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <roleAssociation>
+        <x>215</x>
+        <y>385</y>
+        <w>0</w>
+        <h>16</h>
+      </roleAssociation>
+      <multipliciteAssociation>
+        <x>171</x>
+        <y>617</y>
+        <w>8</w>
+        <h>16</h>
+      </multipliciteAssociation>
+      <multipliciteAssociation>
+        <x>218</x>
+        <y>359</y>
+        <w>22</w>
+        <h>16</h>
+      </multipliciteAssociation>
+    </relationView>
+    <componentView color="-2079" componentID="106" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>50</x>
-        <y>80</y>
-        <w>190</w>
-        <h>100</h>
-      </geometry>
-    </componentView>
-    <componentView color="-2079" componentID="2" displayAttributes="true" displayDefault="true" displayMethods="true">
-      <geometry>
-        <x>420</x>
-        <y>80</y>
-        <w>190</w>
-        <h>70</h>
+        <x>640</x>
+        <y>240</y>
+        <w>360</w>
+        <h>220</h>
       </geometry>
     </componentView>
     <componentView color="-2079" componentID="3" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>50</x>
-        <y>240</y>
-        <w>190</w>
-        <h>115</h>
+        <x>250</x>
+        <y>220</y>
+        <w>210</w>
+        <h>250</h>
       </geometry>
     </componentView>
-    <componentView color="-2079" componentID="106" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <componentView color="-2079" componentID="1" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>420</x>
-        <y>260</y>
+        <x>260</x>
+        <y>60</y>
         <w>190</w>
+        <h>130</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="978" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>640</x>
+        <y>60</y>
+        <w>220</w>
+        <h>84</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="1101" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>270</x>
+        <y>520</y>
+        <w>150</w>
         <h>85</h>
       </geometry>
     </componentView>
-    <componentView color="-2079" componentID="512" displayAttributes="true" displayDefault="true" displayMethods="true">
+    <componentView color="-2079" componentID="1109" displayAttributes="true" displayDefault="true" displayMethods="true">
       <geometry>
-        <x>700</x>
-        <y>260</y>
+        <x>470</x>
+        <y>410</y>
         <w>150</w>
         <h>55</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="1569" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>510</x>
+        <y>570</y>
+        <w>820</w>
+        <h>250</h>
+      </geometry>
+    </componentView>
+    <componentView color="-2079" componentID="2521" displayAttributes="true" displayDefault="true" displayMethods="true">
+      <geometry>
+        <x>140</x>
+        <y>640</y>
+        <w>280</w>
+        <h>145</h>
       </geometry>
     </componentView>
   </umlView>

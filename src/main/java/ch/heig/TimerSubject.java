@@ -8,7 +8,7 @@ public class TimerSubject extends Subject {
     private int time;
     private final String name;
     private Timer timer;
-    boolean isRunning = false;
+    private boolean isRunning = false;
 
     public TimerSubject() {
         name = "Chrono#" + ++timerNumber;

@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class ControlFrame {
-    private final ArrayList<String> captions = new ArrayList<>(Arrays.asList(
+    private static final ArrayList<String> captions = new ArrayList<>(Arrays.asList(
             "Démarrer",
             "Arrêter",
             "Réinitialiser",
