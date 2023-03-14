@@ -108,7 +108,8 @@ public class TimerFrame {
      * @param observers Liste des sujets concernés par la fenêtre.
      */
     public void showMultiple(List<TimerObserver> observers) {
-        final int COMPONENTS_SIZE = BASE_SIZE * observers.size();
+        final int COMPONENTS_SIZE = BASE_SIZE * observers.size() + 50;
+        final int middleDistance = BASE_SIZE + 50;
         class ResizeListener extends ComponentAdapter {
             // TODO : Trouver une manière plus clean d'espacer les horloges. J'ai du rajouter des + 50 partout
 
@@ -117,25 +118,25 @@ public class TimerFrame {
 
             public void componentResized(ComponentEvent e) {
                 Dimension d = frame.getSize();
-                if (d.getHeight() >= COMPONENTS_SIZE + 50 && d.getWidth() >= COMPONENTS_SIZE + 50) {
-                    frame.setMinimumSize(new Dimension(BASE_SIZE + 50, BASE_SIZE + 50));
-                } else if (d.getHeight() >= COMPONENTS_SIZE + 50 && d.getWidth() < COMPONENTS_SIZE + 50) {
-                    frame.setMinimumSize(new Dimension(BASE_SIZE + 50, COMPONENTS_SIZE + 50));
+                if (d.getHeight() >= COMPONENTS_SIZE && d.getWidth() >= COMPONENTS_SIZE) {
+                    frame.setMinimumSize(new Dimension(middleDistance, middleDistance));
+                } else if (d.getHeight() >= COMPONENTS_SIZE && d.getWidth() < COMPONENTS_SIZE) {
+                    frame.setMinimumSize(new Dimension(middleDistance, COMPONENTS_SIZE));
                 } else {
-                    frame.setMinimumSize(new Dimension(COMPONENTS_SIZE + 50, BASE_SIZE + 50));
+                    frame.setMinimumSize(new Dimension(COMPONENTS_SIZE, middleDistance));
                 }
 
-                if ((d.getHeight() >= COMPONENTS_SIZE + 50) && (d.getWidth() < COMPONENTS_SIZE + 50)) {
+                if ((d.getHeight() >= COMPONENTS_SIZE) && (d.getWidth() < COMPONENTS_SIZE)) {
                     frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
-                } else if (d.getWidth() >= COMPONENTS_SIZE + 50 && (d.getHeight() < COMPONENTS_SIZE + 50)) {
+                } else if (d.getWidth() >= COMPONENTS_SIZE && (d.getHeight() < COMPONENTS_SIZE)) {
                     frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
                 }
             }
         }
 
         frame.addComponentListener(new ResizeListener());
-        frame.setPreferredSize(new Dimension(COMPONENTS_SIZE + 50, BASE_SIZE + 50));
-        frame.setMinimumSize(new Dimension(COMPONENTS_SIZE + 50, BASE_SIZE + 50));
+        frame.setPreferredSize(new Dimension(COMPONENTS_SIZE, middleDistance));
+        frame.setMinimumSize(new Dimension(COMPONENTS_SIZE, middleDistance));
 
         show();
     }
@@ -156,24 +157,24 @@ public class TimerFrame {
         class DisplayGraphics extends JPanel {
             @Override
             protected void paintComponent(Graphics g) {
-                int middle = BASE_SIZE / 2;
+                final int middleDistance = BASE_SIZE / 2;
                 g.drawImage(image, 0, 0, this);
-                g.drawString(to.getName(), middle - 30, middle);
+                g.drawString(to.getName(), middleDistance - 30, middleDistance);
                 Graphics2D g2d = (Graphics2D) g;
                 g2d.setStroke(new BasicStroke(3));
 
                 // draw the hour hand
                 g2d.setColor(hourColor);
-                g2d.rotate(Math.toRadians(to.getHours() * 30), middle, middle);
-                g2d.drawLine(middle, middle, middle, middle - 40);
+                g2d.rotate(Math.toRadians(to.getHours() * 30), middleDistance, middleDistance);
+                g2d.drawLine(middleDistance, middleDistance, middleDistance, middleDistance - 40);
                 // draw the minute hand
                 g2d.setColor(minuteColor);
-                g2d.rotate(Math.toRadians(to.getMinutes() * 6), middle, middle);
-                g2d.drawLine(middle, middle, middle, middle - 60);
+                g2d.rotate(Math.toRadians(to.getMinutes() * 6), middleDistance, middleDistance);
+                g2d.drawLine(middleDistance, middleDistance, middleDistance, middleDistance - 60);
                 // draw the second hand
                 g2d.setColor(secondColor);
-                g2d.rotate(Math.toRadians(to.getSeconds() * 6), middle, middle);
-                g2d.drawLine(middle, middle, middle, middle - 80);
+                g2d.rotate(Math.toRadians(to.getSeconds() * 6), middleDistance, middleDistance);
+                g2d.drawLine(middleDistance, middleDistance, middleDistance, middleDistance - 80);
             }
 
             @Override
