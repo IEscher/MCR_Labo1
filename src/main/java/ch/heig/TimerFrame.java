@@ -108,13 +108,12 @@ public class TimerFrame {
      * Function containing the basic parameters to apply to all windows.
      */
     public void show() {
-        frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE + MARGIN));
-        frame.setPreferredSize(new Dimension((BASE_SIZE + MARGIN) * observers.size() , BASE_SIZE + MARGIN));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         frame.pack();
         frame.revalidate();
+        frame.setMinimumSize(new Dimension(BASE_SIZE+MARGIN, frame.getHeight()));
         frame.setVisible(true);
     }
 
