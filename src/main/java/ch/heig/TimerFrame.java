@@ -8,7 +8,7 @@ import java.util.List;
 public class TimerFrame {
     private final JFrame frame;
     private static final int BASE_SIZE = 200;
-    private static final int MARGIN = 80;
+    private static final int MARGIN = 20;
     private final List<TimerObserver> observers;
     private final List<JLabel> timerLabels;
 
@@ -92,8 +92,11 @@ public class TimerFrame {
      * Redraw the frame with the new value.
      */
     public void reDraw() {
+        // Redraw the graphical parts
         frame.revalidate();
         frame.repaint();
+
+        // Update the labels
         if(!timerLabels.isEmpty()) {
             for(int i = 0 ; i < observers.size() ; ++i) {
                 timerLabels.get(i).setText(getFormattedTime(observers.get(i)));
@@ -106,10 +109,10 @@ public class TimerFrame {
      */
     public void show() {
         frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE + MARGIN));
-        frame.setPreferredSize(new Dimension(BASE_SIZE * observers.size() + MARGIN, BASE_SIZE + MARGIN));
+        frame.setPreferredSize(new Dimension((BASE_SIZE + MARGIN) * observers.size() , BASE_SIZE + MARGIN));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
-        frame.setLayout(new FlowLayout());
+        frame.setLayout(new FlowLayout(FlowLayout.CENTER, 0, 0));
         frame.pack();
         frame.revalidate();
         frame.setVisible(true);
