@@ -29,6 +29,7 @@ public class TimerFrame {
     TimerFrame(TimerSubject subject) {
         this();
         observers.add(new TimerObserver(subject, this));
+        frame.setResizable(false);
         addTimerToFrame(observers.get(0));
         this.show();
     }
@@ -63,6 +64,7 @@ public class TimerFrame {
     TimerFrame(TimerSubject subject, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         this();
         observers.add(new TimerObserver(subject, this));
+        frame.setResizable(false);
         addGraphicalTimerToFrame(observers.get(0), fileName, hourColor, minuteColor, secondColor);
         this.show();
     }

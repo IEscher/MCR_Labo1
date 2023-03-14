@@ -67,7 +67,8 @@ public class ControlFrame {
         }
 
         frame.add(p);
-        frame.setLayout(new GridLayout(timerAmount+1, 0));
+        frame.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        frame.setPreferredSize(new Dimension(725,50*(timerList.size()+1)));
     }
 
     /**
