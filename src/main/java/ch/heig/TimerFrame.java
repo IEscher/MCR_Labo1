@@ -2,6 +2,7 @@ package ch.heig;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,9 +11,11 @@ public class TimerFrame {
     private static final int BASE_SIZE = 200;
     private static final int MARGIN = 80;
     private final List<TimerObserver> observers;
+    private List<JLabel> timerLabels = null;
 
     TimerFrame() {
         observers = new LinkedList<>();
+        timerLabels = new LinkedList<>();
         frame = new JFrame();
         frame.setSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE + MARGIN));
     }
@@ -36,7 +39,6 @@ public class TimerFrame {
      */
     TimerFrame(List<TimerSubject> subjects) {
         this();
-
         for (TimerSubject s : subjects) {
             observers.add(new TimerObserver(s, this));
         }
@@ -93,6 +95,7 @@ public class TimerFrame {
     public void reDraw() {
         frame.revalidate();
         frame.repaint();
+        
     }
 
     /**
@@ -101,7 +104,7 @@ public class TimerFrame {
     public void show() {
         frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE + MARGIN));
         frame.setPreferredSize(new Dimension(BASE_SIZE * observers.size() + MARGIN, BASE_SIZE + MARGIN));
-        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new FlowLayout());
         frame.pack();
@@ -168,18 +171,22 @@ public class TimerFrame {
      */
     private void addTimerToFrame(TimerObserver to) {
         JPanel p = new JPanel();
-        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
+        JLabel label = new JLabel(getFormattedTime(to));
+        p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+        p.setPreferredSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE));
+        p.add(Box.createHorizontalGlue());
+        p.add(label);
+        timerLabels.add(label);
+        p.add(Box.createHorizontalGlue());
+        frame.add(p);
+    }
+
+    private String getFormattedTime(TimerObserver to) {
         String timeString = String.format("%s: %02dh %02dm %02ds",
                 to.getName(),
                 to.getHours(),
                 to.getMinutes(),
                 to.getSeconds());
-        JLabel label = new JLabel(timeString);
-        p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
-        p.setPreferredSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE));
-        p.add(Box.createHorizontalGlue());
-        p.add(label);
-        p.add(Box.createHorizontalGlue());
-        frame.add(p);
+        return timeString;
     }
 }
