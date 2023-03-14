@@ -2,7 +2,6 @@ package ch.heig;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -101,10 +100,10 @@ public class TimerFrame {
      */
     public void show() {
         frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE + MARGIN));
+        frame.setPreferredSize(new Dimension(BASE_SIZE * observers.size() + MARGIN, BASE_SIZE + MARGIN));
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         frame.setLocationRelativeTo(null);
         frame.setLayout(new FlowLayout());
-        frame.setPreferredSize(new Dimension(BASE_SIZE * observers.size() + MARGIN, BASE_SIZE + MARGIN));
         frame.pack();
         frame.revalidate();
         frame.setVisible(true);
@@ -162,25 +161,23 @@ public class TimerFrame {
     }
 
 
-
     /**
      * Génère un JPanel pour l'affichage numérique et l'ajoute à la frame.
-     *
      * @param to Observeur à ajouter
      */
     private void addTimerToFrame(TimerObserver to) {
         JPanel p = new JPanel();
-        p.setLayout(new BoxLayout(p,BoxLayout.Y_AXIS));
         String timeString = String.format("%s: %02dh %02dm %02ds",
                 to.getName(),
                 to.getHours(),
                 to.getMinutes(),
                 to.getSeconds());
         JLabel label = new JLabel(timeString);
-        label.setVerticalAlignment(JLabel.TOP);
-        label.setVerticalAlignment(JLabel.TOP);
+        p.setLayout(new BoxLayout(p, BoxLayout.X_AXIS));
+        p.setPreferredSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE));
+        p.add(Box.createHorizontalGlue());
         p.add(label);
-        p.setSize(new Dimension(BASE_SIZE,BASE_SIZE));
+        p.add(Box.createHorizontalGlue());
         frame.add(p);
     }
 }
