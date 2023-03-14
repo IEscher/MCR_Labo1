@@ -1,3 +1,5 @@
+// Authors: Fazlija Ylli, Escher Ian
+
 package ch.heig;
 
 import java.util.LinkedList;
