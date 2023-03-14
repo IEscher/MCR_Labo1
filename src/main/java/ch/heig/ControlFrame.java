@@ -30,6 +30,7 @@ public class ControlFrame {
      */
     public ControlFrame(String title, int timerAmount) {
         frame = new JFrame(title);
+        frame.setResizable(false);
 
         this.timerList = new LinkedList<>();
 

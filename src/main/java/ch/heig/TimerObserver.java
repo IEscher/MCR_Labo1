@@ -16,7 +16,6 @@ public class TimerObserver implements IObserver {
         associatedSubject = subject;
         associatedFrame = frame;
         time = subject.getTime();
-        associatedFrame.reDraw();
     }
 
     /**
@@ -34,7 +33,6 @@ public class TimerObserver implements IObserver {
     public void update(int time) {
         this.time = time;
         this.associatedFrame.reDraw();
-        System.out.println(associatedSubject.getName() + " has been notified of the time: " + time);
     }
 
     /**
