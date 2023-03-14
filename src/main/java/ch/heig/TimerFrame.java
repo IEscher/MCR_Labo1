@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,14 +12,27 @@ public class TimerFrame {
     private final JFrame frame;
     private final int BASE_SIZE = 200;
     private final List<TimerObserver> observers;
+    private final List<LayoutManager> layouts;
+    private LayoutManager activeLayout;
+
+    /**
+     * Instructions de constructions communes à tous les constructeurs.
+     */
+    TimerFrame() {
+        observers = new LinkedList<>();
+        frame = new JFrame();
+        layouts = new ArrayList<>();
+        layouts.add(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+        layouts.add(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+    }
+
     /**
      * Constructeur utilisé pour afficher un chronomètre singulier numérique.
      *
      * @param subject Sujet à obeserver
      */
     TimerFrame(TimerSubject subject) {
-        observers = new LinkedList<>();
-        frame = new JFrame();
+        this();
         observers.add(new TimerObserver(subject, this));
         addTimerToFrame(observers.get(0));
         this.show();
@@ -30,8 +44,7 @@ public class TimerFrame {
      * @param subjects Liste des sujets à observer
      */
     TimerFrame(List<TimerSubject> subjects) {
-        observers = new LinkedList<>();
-        frame = new JFrame();
+        this();
 
         for (TimerSubject s : subjects) {
             observers.add(new TimerObserver(s, this));
@@ -54,8 +67,7 @@ public class TimerFrame {
      * @param secondColor Couleurs de l'aiguille des secondes.
      */
     TimerFrame(TimerSubject subject, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
-        observers = new LinkedList<>();
-        frame = new JFrame();
+        this();
         observers.add(new TimerObserver(subject, this));
         addGraphicalTimerToFrame(observers.get(0), fileName, hourColor, minuteColor, secondColor);
         this.show();
@@ -71,8 +83,7 @@ public class TimerFrame {
      * @param secondColor Couleurs de l'aiguille des secondes.
      */
     TimerFrame(List<TimerSubject> subjects, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
-        observers = new LinkedList<>();
-        frame = new JFrame();
+        this();
 
         for (TimerSubject s : subjects) {
             observers.add(new TimerObserver(s, this));
@@ -85,7 +96,6 @@ public class TimerFrame {
         this.showMultiple(observers);
     }
 
-
     public void reDraw() {
         frame.revalidate();
         frame.repaint();
@@ -97,7 +107,8 @@ public class TimerFrame {
     public void show() {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+        frame.setLayout(layouts.get(0));
+        activeLayout = layouts.get(0);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
@@ -108,35 +119,53 @@ public class TimerFrame {
      * @param observers Liste des sujets concernés par la fenêtre.
      */
     public void showMultiple(List<TimerObserver> observers) {
-        final int COMPONENTS_SIZE = BASE_SIZE * observers.size() + 50;
-        final int middleDistance = BASE_SIZE + 50;
+        final int COMPONENTS_SIZE = BASE_SIZE * observers.size();
+        final int MARGIN = 50;
+        final Dimension HOR_DEFAULT = new Dimension(COMPONENTS_SIZE + MARGIN, BASE_SIZE + MARGIN);
+        final Dimension VER_DEFAULT = new Dimension(BASE_SIZE + MARGIN, COMPONENTS_SIZE + MARGIN);
+
         class ResizeListener extends ComponentAdapter {
-            // TODO : Trouver une manière plus clean d'espacer les horloges. J'ai du rajouter des + 50 partout
-
-            /* Peut-être une solution serait de mettre tous les panels dans un nouveau panel et ensuite
-            gérer la taille minimum de ce panel final au lieu de la taille de la fenêtre. ¯\_(ツ)_/¯*/
-
             public void componentResized(ComponentEvent e) {
                 Dimension d = frame.getSize();
+                System.out.println(d);
+
+                /*
+                // Si on est en horizontal
+                if (activeLayout.equals(layouts.get(0)) && (d.getWidth() < COMPONENTS_SIZE)) {
+                    activeLayout = layouts.get(1);
+                    frame.setLayout(activeLayout);
+                    frame.setMaximumSize(HOR_DEFAULT);
+                    frame.setSize(VER_DEFAULT);
+                } else if (activeLayout.equals(layouts.get(1)) && (d.getHeight() < COMPONENTS_SIZE)) {
+                    activeLayout = layouts.get(0);
+                    frame.setLayout(activeLayout);
+                    frame.setMaximumSize(VER_DEFAULT);
+                    frame.setSize(HOR_DEFAULT);
+                } */
+
+
                 if (d.getHeight() >= COMPONENTS_SIZE && d.getWidth() >= COMPONENTS_SIZE) {
-                    frame.setMinimumSize(new Dimension(middleDistance, middleDistance));
+                    frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE + MARGIN));
                 } else if (d.getHeight() >= COMPONENTS_SIZE && d.getWidth() < COMPONENTS_SIZE) {
-                    frame.setMinimumSize(new Dimension(middleDistance, COMPONENTS_SIZE));
+                    frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN, COMPONENTS_SIZE + MARGIN));
                 } else {
-                    frame.setMinimumSize(new Dimension(COMPONENTS_SIZE, middleDistance));
+                    frame.setMinimumSize(new Dimension(COMPONENTS_SIZE + MARGIN, BASE_SIZE + MARGIN));
                 }
 
                 if ((d.getHeight() >= COMPONENTS_SIZE) && (d.getWidth() < COMPONENTS_SIZE)) {
-                    frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.Y_AXIS));
+                    frame.setLayout(layouts.get(1));
                 } else if (d.getWidth() >= COMPONENTS_SIZE && (d.getHeight() < COMPONENTS_SIZE)) {
-                    frame.setLayout(new BoxLayout(frame.getContentPane(), BoxLayout.X_AXIS));
+                    frame.setLayout(layouts.get(0));
                 }
+                
             }
         }
 
+        frame.setPreferredSize(HOR_DEFAULT);
+        frame.setMaximumSize(HOR_DEFAULT);
+        frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN,BASE_SIZE + MARGIN));
         frame.addComponentListener(new ResizeListener());
-        frame.setPreferredSize(new Dimension(COMPONENTS_SIZE, middleDistance));
-        frame.setMinimumSize(new Dimension(COMPONENTS_SIZE, middleDistance));
+        //frame.setMinimumSize(new Dimension(COMPONENTS_SIZE, MIDDLE_DISTANCE));
 
         show();
     }
