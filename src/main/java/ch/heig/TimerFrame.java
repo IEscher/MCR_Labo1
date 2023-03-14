@@ -2,7 +2,6 @@ package ch.heig;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -185,6 +184,12 @@ public class TimerFrame {
         frame.add(p);
     }
 
+    /**
+     * Return the formatted time as a String
+     *
+     * @param to Observer that will give its data
+     * @return Formatted time as String
+     */
     private String getFormattedTime(TimerObserver to) {
         return String.format("%s: %02dh %02dm %02ds",
                 to.getName(),
