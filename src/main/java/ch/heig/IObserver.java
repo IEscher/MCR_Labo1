@@ -1,5 +1,10 @@
 package ch.heig;
 
 public interface IObserver {
-    public abstract void update(int time);
+    /**
+     * Update the observer
+     *
+     * @param time the new time given to the observer
+     */
+    void update(int time);
 }

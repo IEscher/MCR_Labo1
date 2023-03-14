@@ -22,6 +22,12 @@ public class ControlFrame {
     private final List<TimerSubject> timerList;
     private final JFrame frame;
 
+    /**
+     * Constructor
+     *
+     * @param title       Title of the frame
+     * @param timerAmount Number of timers to create
+     */
     public ControlFrame(String title, int timerAmount) {
         frame = new JFrame(title);
 
@@ -61,12 +67,21 @@ public class ControlFrame {
         frame.setLayout(new GridLayout(timerAmount+1, 0));
     }
 
+    /**
+     * Display the frame
+     */
     public void show() {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 
+    /**
+     * Create a panel with a label and 3 buttons
+     *
+     * @param ts TimerSubject to observe
+     * @return JPanel with the label and the buttons
+     */
     private JPanel createLinePanel(TimerSubject ts) {
         JPanel p = new JPanel();
 

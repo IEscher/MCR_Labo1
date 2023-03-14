@@ -7,13 +7,10 @@ import java.util.List;
 
 public class TimerFrame {
     private final JFrame frame;
-    private final int BASE_SIZE = 200;
-    private final int MARGIN = 80;
+    private static final int BASE_SIZE = 200;
+    private static final int MARGIN = 80;
     private final List<TimerObserver> observers;
 
-    /**
-     * Instructions de constructions communes à tous les constructeurs.
-     */
     TimerFrame() {
         observers = new LinkedList<>();
         frame = new JFrame();
@@ -21,9 +18,9 @@ public class TimerFrame {
     }
 
     /**
-     * Constructeur utilisé pour afficher un chronomètre singulier numérique.
+     * Constructor used to display a single digital timer.
      *
-     * @param subject Sujet à obeserver
+     * @param subject Subject to observe
      */
     TimerFrame(TimerSubject subject) {
         this();
@@ -33,9 +30,9 @@ public class TimerFrame {
     }
 
     /**
-     * Constructeur utilisé pour afficher plusieurs chronomètres numériques
+     * Constructor used to display multiple digital timers
      *
-     * @param subjects Liste des sujets à observer
+     * @param subjects List of subjects to observe
      */
     TimerFrame(List<TimerSubject> subjects) {
         this();
@@ -52,13 +49,13 @@ public class TimerFrame {
     }
 
     /**
-     * Constructeur utilisé pour afficher un chronomètre graphique.
+     * Constructor used to display a single graphical timer.
      *
-     * @param subject     Sujet à observer
-     * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
-     * @param hourColor   Couleur de l'aiguille des heures
-     * @param minuteColor Couleur de l'aiguille des minutes
-     * @param secondColor Couleurs de l'aiguille des secondes.
+     * @param subject     Subject to observe
+     * @param fileName    Path to the file to use as background
+     * @param hourColor   Color of the hour hand
+     * @param minuteColor Color of the minute hand
+     * @param secondColor Color of the second hand
      */
     TimerFrame(TimerSubject subject, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         this();
@@ -68,13 +65,13 @@ public class TimerFrame {
     }
 
     /**
-     * Constructeur utilisé pour afficher plusieurs chronomètres graphique.
+     * Constructor used to display multiple graphical timers.
      *
-     * @param subjects    Liste des sujets à observer
-     * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
-     * @param hourColor   Couleur de l'aiguille des heures
-     * @param minuteColor Couleur de l'aiguille des minutes
-     * @param secondColor Couleurs de l'aiguille des secondes.
+     * @param subjects    List of subjects to observe
+     * @param fileName    Path to the file to use as background
+     * @param hourColor   Color of the hour hand
+     * @param minuteColor Color of the minute hand
+     * @param secondColor Color of the second hand
      */
     TimerFrame(List<TimerSubject> subjects, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         this();
@@ -90,13 +87,16 @@ public class TimerFrame {
         this.show();
     }
 
+    /**
+     * Redraw the frame with the new value.
+     */
     public void reDraw() {
         frame.revalidate();
         frame.repaint();
     }
 
     /**
-     * Fonction contenant les paramètres de bases à appliquer à toutes les fenêtres.
+     * Function containing the basic parameters to apply to all windows.
      */
     public void show() {
         frame.setMinimumSize(new Dimension(BASE_SIZE + MARGIN, BASE_SIZE + MARGIN));
@@ -110,13 +110,13 @@ public class TimerFrame {
     }
 
     /**
-     * Génère un JPanel avec une image et des aiguilles et l'ajoute à la frame.
+     * Generates a JPanel with an image and hands and adds it to the frame.
      *
-     * @param to          Observeur à ajouter
-     * @param fileName    Chemin du fichier à utiliser comme arrière-plan (200x200)
-     * @param hourColor   Couleur de l'aiguille des heures
-     * @param minuteColor Couleur de l'aiguille des minutes
-     * @param secondColor Couleurs de l'aiguille des secondes.
+     * @param to          Observer to add
+     * @param fileName    Path to the file to use as background
+     * @param hourColor   Color of the hour hand
+     * @param minuteColor Color of the minute hand
+     * @param secondColor Color of the second hand
      */
     private void addGraphicalTimerToFrame(TimerObserver to, String fileName, Color hourColor, Color minuteColor, Color secondColor) {
         Image image = Toolkit.getDefaultToolkit().getImage(fileName)
@@ -133,19 +133,19 @@ public class TimerFrame {
                 // draw the hour hand
                 g2d.setStroke(new BasicStroke(3));
                 g2d.setColor(hourColor);
-                g2d.rotate(Math.toRadians(to.getHours() * 30), middleDistance, middleDistance);
+                g2d.rotate(Math.toRadians((to.getHours() % 24) * 30.0), middleDistance, middleDistance);
                 g2d.drawLine(middleDistance, middleDistance, middleDistance, middleDistance - 40);
 
                 // draw the minute hand
                 g2d.setStroke(new BasicStroke(2));
                 g2d.setColor(minuteColor);
-                g2d.rotate(Math.toRadians(to.getMinutes() * 6), middleDistance, middleDistance);
+                g2d.rotate(Math.toRadians(to.getMinutes() * 6.0), middleDistance, middleDistance);
                 g2d.drawLine(middleDistance, middleDistance, middleDistance, middleDistance - 60);
 
                 // draw the second hand
                 g2d.setStroke(new BasicStroke(1));
                 g2d.setColor(secondColor);
-                g2d.rotate(Math.toRadians(to.getSeconds() * 6), middleDistance, middleDistance);
+                g2d.rotate(Math.toRadians(to.getSeconds() * 6.0), middleDistance, middleDistance);
                 g2d.drawLine(middleDistance, middleDistance, middleDistance, middleDistance - 80);
             }
 
@@ -162,11 +162,13 @@ public class TimerFrame {
 
 
     /**
-     * Génère un JPanel pour l'affichage numérique et l'ajoute à la frame.
-     * @param to Observeur à ajouter
+     * Generates a JPanel for digital display and adds it to the frame.
+     *
+     * @param to Observer to add
      */
     private void addTimerToFrame(TimerObserver to) {
         JPanel p = new JPanel();
+        p.setLayout(new BoxLayout(p, BoxLayout.Y_AXIS));
         String timeString = String.format("%s: %02dh %02dm %02ds",
                 to.getName(),
                 to.getHours(),
