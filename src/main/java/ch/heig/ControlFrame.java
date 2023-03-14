@@ -22,7 +22,7 @@ public class ControlFrame {
     private final List<TimerSubject> timerList;
     private final JFrame frame;
 
-    public ControlFrame(String title, int timerAmount) throws HeadlessException {
+    public ControlFrame(String title, int timerAmount) {
         frame = new JFrame(title);
 
         this.timerList = new LinkedList<>();
